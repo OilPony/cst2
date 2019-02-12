@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera2.full" />
 
@@ -22,7 +24,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".smile" />
-        <activity android:name=".arm"></activity>
+        <activity android:name=".arm" />
+        <activity android:name=".show_pic_smile" />
+        <activity android:name=".show_pic_arm"></activity>
     </application>
 
 </manifest>
