@@ -39,7 +39,7 @@ public class show_pic_arm extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button next = findViewById(R.id.next);
+        Button next = findViewById(R.id.button4);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +52,7 @@ public class show_pic_arm extends AppCompatActivity {
         Toast.makeText(getBaseContext(), "อัพโหลดรูป", Toast.LENGTH_LONG).show();
         String path = Environment.getExternalStorageDirectory() + "/pic_arm.jpg";
         Ion.with(this)
-                .load("http://734c4fc0.ngrok.io/pro-android/upload.php")
+                .load("http://cdd8ad81.ngrok.io/pro-android/upload.php")
                 .setMultipartFile("upload_file", new File(path))
                 .asString()
                 .setCallback(new FutureCallback<String>() {
