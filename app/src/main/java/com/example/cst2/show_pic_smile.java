@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.graphics.Matrix;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -23,6 +24,9 @@ import com.luseen.simplepermission.permissions.PermissionActivity;
 import com.luseen.simplepermission.permissions.SinglePermissionCallback;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class show_pic_smile extends PermissionActivity {
     private boolean mIsUploading = false;
@@ -30,9 +34,10 @@ public class show_pic_smile extends PermissionActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_smile);
-        ImageView logoImageView = findViewById(R.id.imageView2);
-        Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/pic_smile.jpg", null);
-        logoImageView.setImageBitmap(bitmap);
+//        ImageView logoImageView = findViewById(R.id.imageView2);
+//        Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/pic_smile.jpg", null);
+//        logoImageView.setImageBitmap(bitmap);
+        re_pic();
 
         Button cancle = findViewById(R.id.cn);
         cancle.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +60,7 @@ public class show_pic_smile extends PermissionActivity {
         Toast.makeText(getBaseContext(), "อัพโหลดรูป", Toast.LENGTH_LONG).show();
         String path = Environment.getExternalStorageDirectory() + "/pic_smile.jpg";
         Ion.with(this)
-                .load("http://21d9f0e2.ngrok.io/pro-android/upload.php")
+                .load("http://734c4fc0.ngrok.io/pro-android/upload.php")
                 .setMultipartFile("upload_file", new File(path))
                 .asString()
                 .setCallback(new FutureCallback<String>() {
@@ -66,10 +71,25 @@ public class show_pic_smile extends PermissionActivity {
                 });
     }
 
+    public void re_pic(){
+        OutputStream out = null;
+        File file = new File(Environment.getExternalStorageDirectory() + "/pic_smile.jpg");
+        ImageView image = (ImageView)findViewById(R.id.imageView2);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(270);
+        Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/pic_smile.jpg");
+        Bitmap rotated = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
 
 
+        try {
+            out = new FileOutputStream(file);
+            rotated.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            image.setImageBitmap(rotated);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
-
+    }
 
 }

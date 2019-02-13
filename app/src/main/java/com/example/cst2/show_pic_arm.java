@@ -3,6 +3,7 @@ package com.example.cst2;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class show_pic_arm extends AppCompatActivity {
 
@@ -22,9 +26,10 @@ public class show_pic_arm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_pic_arm);
-        ImageView logoImageView = findViewById(R.id.imageView2);
-        Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/pic_arm.jpg", null);
-        logoImageView.setImageBitmap(bitmap);
+//        ImageView logoImageView = findViewById(R.id.imageView2);
+//        Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/pic_arm.jpg", null);
+//        logoImageView.setImageBitmap(bitmap);
+        re_pic();
 
         Button cancle = findViewById(R.id.cn);
         cancle.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +52,7 @@ public class show_pic_arm extends AppCompatActivity {
         Toast.makeText(getBaseContext(), "อัพโหลดรูป", Toast.LENGTH_LONG).show();
         String path = Environment.getExternalStorageDirectory() + "/pic_arm.jpg";
         Ion.with(this)
-                .load("http://21d9f0e2.ngrok.io/pro-android/upload.php")
+                .load("http://734c4fc0.ngrok.io/pro-android/upload.php")
                 .setMultipartFile("upload_file", new File(path))
                 .asString()
                 .setCallback(new FutureCallback<String>() {
@@ -56,6 +61,27 @@ public class show_pic_arm extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    public void re_pic(){
+        OutputStream out = null;
+        File file = new File(Environment.getExternalStorageDirectory() + "/pic_arm.jpg");
+        ImageView image = (ImageView)findViewById(R.id.imageView2);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(270);
+        Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/pic_arm.jpg");
+        Bitmap rotated = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
+
+
+        try {
+            out = new FileOutputStream(file);
+            rotated.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            image.setImageBitmap(rotated);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }
