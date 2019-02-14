@@ -20,6 +20,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class show_pic_arm extends AppCompatActivity {
 
     @Override
@@ -50,9 +56,13 @@ public class show_pic_arm extends AppCompatActivity {
     }
     public void up_pic(){
         Toast.makeText(getBaseContext(), "อัพโหลดรูป", Toast.LENGTH_LONG).show();
-        String path = Environment.getExternalStorageDirectory() + "/pic_arm.jpg";
+        //String path = Environment.getExternalStorageDirectory() + "/pic_arm.jpg";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy", Locale.KOREA);
+        Date now = new Date();
+        String path = (Environment.getExternalStorageDirectory()+"/"+"arm_"+formatter.format(now)+".jpg");
+
         Ion.with(this)
-                .load("http://cdd8ad81.ngrok.io/pro-android/upload.php")
+                .load("http://98114966.ngrok.io/pro-android/upload.php")
                 .setMultipartFile("upload_file", new File(path))
                 .asString()
                 .setCallback(new FutureCallback<String>() {
@@ -65,11 +75,13 @@ public class show_pic_arm extends AppCompatActivity {
 
     public void re_pic(){
         OutputStream out = null;
-        File file = new File(Environment.getExternalStorageDirectory() + "/pic_arm.jpg");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy", Locale.KOREA);
+        Date now = new Date();
+        File file = new File(Environment.getExternalStorageDirectory()+"/"+"arm_"+formatter.format(now)+".jpg");
         ImageView image = (ImageView)findViewById(R.id.imageView2);
         Matrix matrix = new Matrix();
         matrix.postRotate(270);
-        Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/pic_arm.jpg");
+        Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+"/"+"arm_"+formatter.format(now)+".jpg");
         Bitmap rotated = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
 
 

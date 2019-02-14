@@ -19,6 +19,12 @@ import com.koushikdutta.ion.Ion;
 import java.io.File;
 import java.io.IOException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class record extends AppCompatActivity implements View.OnClickListener{
 
     public static final int RECORD_AUDIO = 0;
@@ -46,7 +52,10 @@ public class record extends AppCompatActivity implements View.OnClickListener{
         stop.setEnabled(false);
         play.setEnabled(false);
         next.setEnabled(false);
-        output = Environment.getExternalStorageDirectory().getAbsolutePath() + "/myrecording.wav";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy", Locale.KOREA);
+        Date now = new Date();
+        //final File file = new File(Environment.getExternalStorageDirectory()+"/"+"arm_"+formatter.format(now)+".jpg");
+        output = Environment.getExternalStorageDirectory()+"/"+"record_"+formatter.format(now)+".wav";
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -126,9 +135,11 @@ public class record extends AppCompatActivity implements View.OnClickListener{
     }
     public void up_sound(View view){
         Toast.makeText(getBaseContext(), "อัพโหลดไฟล์เสียง", Toast.LENGTH_LONG).show();
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/myrecording.wav";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy", Locale.KOREA);
+        Date now = new Date();
+        String path = Environment.getExternalStorageDirectory()+"/"+"record_"+formatter.format(now)+".wav";;
         Ion.with(this)
-                .load("http://cdd8ad81.ngrok.io/pro-android/upload.php")
+                .load("http://98114966.ngrok.io/pro-android/upload.php")
                 .setMultipartFile("upload_file", new File(path))
                 .asString()
                 .setCallback(new FutureCallback<String>() {
